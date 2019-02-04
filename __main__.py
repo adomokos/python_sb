@@ -4,4 +4,5 @@ from python_sb import main
 
 if __name__ == '__main__':
     # execute only if run as the entry point into the program
+    # import ipdb; ipdb.set_trace() - stop here with the debugger
     main()
