@@ -13,6 +13,12 @@ class TestClass(object):
         x = python_sb.get_hmm()
         assert x == 'hmmm...'
 
+    def test_dog(self):
+        d = python_sb.Dog('Fido')
+        assert d.name == 'Fido'
+        d.add_trick('roll over')
+        assert len(d.tricks) == 1
+        assert d.tricks.__len__() == 1
 
 
 #  class BasicTestSuite(unittest.TestCase):
