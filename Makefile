@@ -11,7 +11,7 @@ run: ## Run the app
 .PHONY: run
 
 test: ## Run the tests
-	pipenv run pytest
+	pipenv run pytest -s
 .PHONY: test
 
 repl: ## Fire up the Repl
