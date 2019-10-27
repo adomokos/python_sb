@@ -2,7 +2,6 @@
 
 from .context import python_sb
 
-import pytest
 
 class TestClass(object):
     def test_one(self):
