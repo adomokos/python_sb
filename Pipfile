@@ -8,7 +8,6 @@ ipdb = "*"
 
 [dev-packages]
 mamba = "*"
-expects = "*"
 pytest = "*"
 
 [requires]
