@@ -4,10 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pytest = "*"
 ipdb = "*"
 
 [dev-packages]
+mamba = "*"
+expects = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.7"

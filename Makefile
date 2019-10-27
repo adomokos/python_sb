@@ -14,6 +14,10 @@ test: ## Run the tests
 	pipenv run pytest -s
 .PHONY: test
 
+spec: ## Run the specs
+	@pipenv run mamba spec --format=documentation
+.PHONY: spec
+
 repl: ## Fire up the Repl
 	pipenv run python
 .PHONY: repl
