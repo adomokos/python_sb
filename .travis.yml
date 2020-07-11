@@ -1,7 +1,9 @@
 language: python
 python:
   - '3.7'
+before_install:
+  - pip install poetry
 install:
-  - 'pip install --user poetry'
-  - 'poetry install'
-script: 'make test && make spec'
+  - poetry install
+script:
+  - make test && make spec
