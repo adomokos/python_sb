@@ -7,19 +7,23 @@ python-version: ## Provides the Python version
 .PHONY: python-version
 
 run: ## Run the app
-	pipenv run python __main__.py
+	poetry run my-script
 .PHONY: run
 
+async-example: ## Run the async example
+	poetry run async-example
+.PHONY: async-example
+
 test: ## Run the tests
-	pipenv run pytest -s
+	poetry run pytest -s
 .PHONY: test
 
 spec: ## Run the specs
-	@pipenv run mamba spec --format=documentation
+	poetry run mamba spec --format=documentation
 .PHONY: spec
 
 repl: ## Fire up the Repl
-	pipenv run python
+	poetry run python
 .PHONY: repl
 
 help: ## Prints this help message
