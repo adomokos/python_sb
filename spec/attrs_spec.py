@@ -1,6 +1,7 @@
 from mamba import description, it
 from attr import attrs, attrib
 import attr
+import typing
 
 
 @attr.s
@@ -58,6 +59,12 @@ class User(object):
     password = attr.ib()
 
 
+@attr.s(auto_attribs=True)
+class AnotherClass:
+    a_number: int = 42
+    list_of_numbers: typing.List[int] = attr.Factory(list)
+
+
 with description('Attrs') as self:
     with it("works with Empty objects"):
         empty1 = Empty()
@@ -100,3 +107,7 @@ with description('Attrs') as self:
             filter=lambda attr, value: attr.name != "password"
         )
         assert len(d1['users']) == 2
+
+    with it("can use typing as well"):
+        sc = SomeClass(1, [1, 2, 3])
+        assert sc.list_of_numbers == [1, 2, 3]
