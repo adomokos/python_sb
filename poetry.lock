@@ -81,7 +81,7 @@ description = "The definitive testing tool for Python. Born under the banner of 
 name = "mamba"
 optional = false
 python-versions = "*"
-version = "0.11.0"
+version = "0.11.1"
 
 [package.dependencies]
 clint = "*"
@@ -211,7 +211,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "6b49712a1cca2578097f3f68d9ff66dcbbb1e66a0e2ece8a56b8241c7b706459"
+content-hash = "4af179a045c6ef67566176f48d89d1f880577318491218e1ab3eb13b8221c6ce"
 python-versions = "^3.5"
 
 [metadata.files]
@@ -274,7 +274,7 @@ importlib-metadata = [
     {file = "importlib_metadata-1.7.0.tar.gz", hash = "sha256:90bb658cdbbf6d1735b6341ce708fc7024a3e14e99ffdc5783edea9f9b077f83"},
 ]
 mamba = [
-    {file = "mamba-0.11.0.tar.gz", hash = "sha256:5fdb77be323dc4c9723f0752ff73d1753a94f3b60bb12ba555370fb3d37feb2e"},
+    {file = "mamba-0.11.1.tar.gz", hash = "sha256:f976735949bc9a8731cc0876aaea2720949bd3d1554b0e94004c91a4f61abecb"},
 ]
 more-itertools = [
     {file = "more-itertools-8.4.0.tar.gz", hash = "sha256:68c70cc7167bdf5c7c9d8f6954a7837089c6a36bf565383919bb595efb8a17e5"},
