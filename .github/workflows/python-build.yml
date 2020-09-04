@@ -30,4 +30,4 @@ jobs:
         poetry install
     - name: Run test
       run: |
-        make test && make spec
+        make test spec
