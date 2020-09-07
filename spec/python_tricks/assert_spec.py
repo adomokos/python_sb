@@ -76,3 +76,10 @@ with description('Asserts') as self:
             with indent:
                 result = indent.print('hello')
                 expect(result).to(equal('        hello'))
+
+    with it("can destructure tuples"):
+        car = ('red', 'auto', 12, 3812.4)
+        color, _, _, mileage = car
+
+        expect(color).to(equal('red'))
+        expect(mileage).to(equal(3812.4))
