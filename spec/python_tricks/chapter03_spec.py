@@ -105,3 +105,24 @@ with description('Chapter03') as self:
             assert callable(plus_3)
             assert callable(yell)
             assert not callable('hello')
+
+    with context('lambdas'):
+        with it("single-expression functions"):
+            result = (lambda x, y: x + y)(5, 3)
+            assert result == 8
+
+        with it("useful lambdas"):
+            tuples = [(1, 'd'), (2, 'b'), (4, 'a'), (3, 'c')]
+            result = sorted(tuples, key=lambda x: x[1])
+            assert result == [(4, 'a'), (2, 'b'), (3, 'c'), (1, 'd')]
+
+            result = sorted(range(-5, 6), key=lambda x: x * x)
+            assert result == [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]
+
+            def make_adder(n):
+                return lambda x: x + n
+
+            plus_3 = make_adder(3)
+            plus_5 = make_adder(5)
+            assert plus_3(4) == 7
+            assert plus_5(4) == 9
