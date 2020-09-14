@@ -1,5 +1,6 @@
-from mamba import description, it, context, fit
+from mamba import description, it, context
 from expects import expect, equal
+from functools import wraps
 
 
 def yell(text):
@@ -126,3 +127,110 @@ with description('Chapter03') as self:
             plus_5 = make_adder(5)
             assert plus_3(4) == 7
             assert plus_5(4) == 9
+
+    with context('decorators'):
+        with it('functions can decorate other fns'):
+            def null_decorator(func):
+                return func
+
+            def greet():
+                return 'Hello!'
+
+            greet = null_decorator(greet)
+            result = greet()
+            assert result == 'Hello!'
+
+            @null_decorator
+            def greet2():
+                return 'Hello!'
+
+            assert greet2() == 'Hello!'
+
+        with it('decorators can modify behavior'):
+            def uppercase(func):
+                def wrapper():
+                    original_result = func()
+                    modified_result = original_result.upper()
+                    return modified_result
+                return wrapper
+
+            @uppercase
+            def greet():
+                return 'Hello!'
+
+            result = greet()
+            assert result == 'HELLO!'
+
+            def strong(func):
+                def wrapper():
+                    return '<strong>' + func() + '</strong>'
+                return wrapper
+
+            def emphasis(func):
+                def wrapper():
+                    return '<em>' + func() + '</em>'
+                return wrapper
+
+            @strong
+            @emphasis
+            def greet():
+                return 'Hello!'
+
+            result = greet()
+            assert result == '<strong><em>Hello!</em></strong>'
+
+        with it('can forward arguments'):
+            def trace(func):
+                def wrapper(*args, **kwargs):
+                    original_args = f'TRACE: calling {func.__name__}() - '\
+                                     f'with {args}, {kwargs}'
+                    result = func(*args, **kwargs)
+                    output = f'TRACE: {func.__name__}() ' \
+                              f'returned {result!r}'
+                    return original_args + result + output
+                return wrapper
+
+            @trace
+            def say(name, line):
+                return f'{name}: {line}'
+
+            result = say('Jane', 'Hello, World')
+            assert result.startswith("TRACE: calling say()")
+
+        with it('use functools.wrap for copying metadata'):
+            def uppercase(func):
+                @wraps(func)
+                def wrapper():
+                    return func().upper()
+                return wrapper
+
+            @uppercase
+            def greet():
+                """Return a friendly greeting."""
+                return 'Hello!'
+
+            result = greet()
+            assert result == 'HELLO!'
+
+            func_name = greet.__name__
+            assert func_name == 'greet'
+
+            doc = greet.__doc__
+            assert doc == 'Return a friendly greeting.'
+
+    with context('function argument unpacking'):
+        with it('can help simplifying the code'):
+            def vector_tos(x, y, z):
+                return ('<%s, %s, %s>' % (x, y, z))
+
+            expected = '<1, 0, 1>'
+            result = vector_tos(1, 0, 1)
+            assert result == expected
+
+            tuple_vec = (1, 0, 1)
+            list_vec = [1, 0, 1]
+            assert vector_tos(*tuple_vec) == expected
+            assert vector_tos(*list_vec) == expected
+
+            genexpr = (x * x for x in range(3))
+            expect(vector_tos(*genexpr)).to(equal('<0, 1, 4>'))
