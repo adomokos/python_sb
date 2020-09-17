@@ -1,13 +1,14 @@
-from mamba import description, it, context
-from expects import expect, equal
+from mamba import description, it, context  # type: ignore
+from typing import Callable
+from expects import expect, equal  # type: ignore
 from functools import wraps
 
 
-def yell(text):
+def yell(text: str) -> str:
     return text.upper() + '!'
 
 
-def greet(func):
+def greet(func: Callable) -> str:
     greeting = func('Hi, I am a Python program')
     return greeting
 
@@ -42,7 +43,7 @@ with description('Chapter03') as self:
             assert result == 'HI, I AM A PYTHON PROGRAM!'
 
         with it("can be nested"):
-            def speak(text):
+            def speak(text: str) -> str:
                 def whisper(t):
                     return t.lower() + '...'
                 return whisper(text)
@@ -50,29 +51,31 @@ with description('Chapter03') as self:
             result = speak("Hello, World")
             expect(result).to(equal('hello, world...'))
 
-            def get_speak_func(volume):
-                def whisper(text):
+            def get_speak_func(volume: float) -> Callable:
+                def whisper(text: str) -> str:
                     return text.lower() + '...'
 
-                def yell(text):
+                def yell(text: str) -> str:
                     return text.upper() + '!'
+
                 if volume > 0.5:
                     return yell
                 else:
                     return whisper
 
-            result = get_speak_func(0.3)
-            assert result('Hey') == 'hey...'
-            result = get_speak_func(0.7)
-            assert result('Hey') == 'HEY!'
+            result2 = get_speak_func(0.3)
+            assert result2('Hey') == 'hey...'
+            result3 = get_speak_func(0.7)
+            assert result3('Hey') == 'HEY!'
 
         with it("can capture local state"):
-            def get_speak_func(text, volume):
-                def whisper():
+            def get_speak_func(text: str, volume: float) -> Callable[[], str]:
+                def whisper() -> str:
                     return text.lower() + '...'
 
-                def yell():
+                def yell() -> str:
                     return text.upper() + '!'
+
                 if volume > 0.5:
                     return yell
                 else:
@@ -81,8 +84,8 @@ with description('Chapter03') as self:
             result = get_speak_func('Hey', 0.4)
             assert result() == 'hey...'
 
-            def make_adder(n):
-                def add(x):
+            def make_adder(n: int) -> Callable:
+                def add(x: int) -> int:
                     return x + n
                 return add
 
@@ -120,7 +123,7 @@ with description('Chapter03') as self:
             result = sorted(range(-5, 6), key=lambda x: x * x)
             assert result == [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]
 
-            def make_adder(n):
+            def make_adder(n: int) -> Callable:
                 return lambda x: x + n
 
             plus_3 = make_adder(3)
@@ -130,10 +133,10 @@ with description('Chapter03') as self:
 
     with context('decorators'):
         with it('functions can decorate other fns'):
-            def null_decorator(func):
+            def null_decorator(func: Callable) -> Callable:
                 return func
 
-            def greet():
+            def greet() -> str:
                 return 'Hello!'
 
             greet = null_decorator(greet)
@@ -186,7 +189,7 @@ with description('Chapter03') as self:
                                      f'with {args}, {kwargs}'
                     result = func(*args, **kwargs)
                     output = f'TRACE: {func.__name__}() ' \
-                              f'returned {result!r}'
+                             f'returned {result!r}'
                     return original_args + result + output
                 return wrapper
 
@@ -220,7 +223,7 @@ with description('Chapter03') as self:
 
     with context('function argument unpacking'):
         with it('can help simplifying the code'):
-            def vector_tos(x, y, z):
+            def vector_tos(x: int, y: int, z: int) -> str:
                 return ('<%s, %s, %s>' % (x, y, z))
 
             expected = '<1, 0, 1>'
