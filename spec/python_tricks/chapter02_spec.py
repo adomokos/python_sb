@@ -1,5 +1,6 @@
-from mamba import description, it, context, fit
-from expects import expect, equal, raise_error
+from typing import Tuple, Any
+from mamba import description, it, context  # type: ignore
+from expects import expect, equal, raise_error  # type: ignore
 from contextlib import contextmanager
 from string import Template
 
@@ -82,7 +83,10 @@ with description('Chapter02') as self:
 
     with context('underscores:'):
         with it("can destructure tuples"):
-            car = ('red', 'auto', 12, 3812.4)
+            car = ('red', 'auto', 12, 3812.4)  # type: Tuple[str, str, int, float]
+            color: str
+            mileage: float
+            _: Any
             color, _, _, mileage = car
 
             expect(color).to(equal('red'))
