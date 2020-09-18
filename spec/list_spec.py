@@ -1,4 +1,4 @@
-from mamba import description, it
+from mamba import description, it  # type: ignore
 
 
 with description('A list') as self:
@@ -39,5 +39,5 @@ with description('A list') as self:
 
     with it('can remove an item'):
         x = [2, 8, 9, 10]
-        y = x.remove(8)
+        x.remove(8)
         assert x == [2, 9, 10]

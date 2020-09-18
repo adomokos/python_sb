@@ -1,4 +1,4 @@
-from mamba import description, it
+from mamba import description, it  # type: ignore
 
 
 with description('List Comprehension'):
