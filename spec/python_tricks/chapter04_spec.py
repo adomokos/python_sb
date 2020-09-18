@@ -1,12 +1,14 @@
-from mamba import description, it, context
-from expects import expect, equal, raise_error
+from mamba import description, it, context  # type: ignore
+from expects import expect, raise_error  # type: ignore
 
 
 class BaseValidationError(ValueError):
     pass
 
+
 class NameTooShortError(BaseValidationError):
     pass
+
 
 class NameTooLongError(BaseValidationError):
     pass
@@ -17,6 +19,7 @@ def validate(name):
         raise NameTooShortError(name)
     if len(name) > 10:
         raise NameTooLongError(name)
+
 
 with description('Chapter04') as self:
     with context('custom errors'):
