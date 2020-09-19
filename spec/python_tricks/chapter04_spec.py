@@ -1,4 +1,4 @@
-from mamba import description, it, fit, context  # type: ignore
+from mamba import description, it, context  # type: ignore
 from expects import expect, equal, raise_error  # type: ignore
 from typing import List, Type
 import copy
@@ -84,7 +84,7 @@ with description('Chapter04') as self:
             assert zs[1][0] == 4
 
     with context('class and static methods'):
-        with fit('can have different roles'):
+        with it('can have different roles'):
             p = Pizza.margherita()
             expect(p.ingredients).to(equal(['mozzarella', 'tomatoes']))
             assert p.area() > 0
