@@ -1,9 +1,13 @@
 from mamba import description, it, context  # type: ignore
-from expects import expect, equal, raise_error  # type: ignore
+from expects import expect, raise_error  # type: ignore
 from collections import OrderedDict, ChainMap, namedtuple
-from typing import Dict, List
+from typing import Dict, List, Deque, Tuple
 from types import MappingProxyType
+from collections import deque
+from multiprocessing import Queue
+from queue import PriorityQueue
 import array
+import heapq
 
 
 class Car:
@@ -170,3 +174,48 @@ with description('Chapter05') as self:
 
             expect(lambda: add_vowel('x')).to(
                 raise_error(AttributeError))
+
+    with context('stacks'):
+        with it('is LIFO'):
+            s: Deque[str] = deque()
+            s.append('eat')
+            s.append('sleep')
+            s.append('code')
+
+            assert s.pop() == 'code'
+            assert s.pop() == 'sleep'
+            assert s.pop() == 'eat'
+
+            expect(lambda: s.pop()).to(
+                raise_error(IndexError))
+
+    with context('queues'):
+        with it('is FIFO'):
+            q: Queue[str] = Queue()
+            q.put('eat')
+            q.put('sleep')
+            q.put('code')
+
+            assert q.get() == 'eat'
+            assert q.get() == 'sleep'
+            assert q.get() == 'code'
+
+    with context('priority queues'):
+        with it('ranks item by sort key'):
+            q2: List[Tuple[int, str]] = []
+            heapq.heappush(q2, (2, 'code'))
+            heapq.heappush(q2, (1, 'eat'))
+            heapq.heappush(q2, (3, 'sleep'))
+
+            assert heapq.heappop(q2) == (1, 'eat')
+            assert heapq.heappop(q2) == (2, 'code')
+            assert heapq.heappop(q2) == (3, 'sleep')
+
+            q3: PriorityQueue = PriorityQueue()
+            q3.put((2, 'code'))
+            q3.put((1, 'eat'))
+            q3.put((3, 'sleep'))
+
+            assert q3.get() == (1, 'eat')
+            assert q3.get() == (2, 'code')
+            assert q3.get() == (3, 'sleep')
