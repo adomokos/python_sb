@@ -13,6 +13,22 @@ class Repeater:
         return self.value
 
 
+class BoundedRepeater:
+    def __init__(self, value, max_repeats):
+        self.value = value
+        self.max_repeats = max_repeats
+        self.count = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.count >= self.max_repeats:
+            raise StopIteration
+        self.count += 1
+        return self.value
+
+
 with description('Chapter06') as self:
     with context('comprehension'):
         with it('works with lists'):
@@ -65,3 +81,73 @@ with description('Chapter06') as self:
 
             expect(lambda: next(list_iterator)).to(
                 raise_error(StopIteration))
+
+        with it('works with bounds'):
+            repeater2 = BoundedRepeater('Hello', 3)
+            result = list(map(lambda x: x.upper(), repeater2))
+            assert result == ['HELLO', 'HELLO', 'HELLO'], result
+
+    with context('generators'):
+        with it('repeat it three times'):
+            def repeat_three_times(value):
+                yield value
+                yield value
+                yield value
+
+            iterator3 = repeat_three_times('Hey!')
+            assert next(iterator3) == 'Hey!'
+            assert next(iterator3) == 'Hey!'
+            assert next(iterator3) == 'Hey!'
+
+            expect(lambda: next(iterator3)).to(
+                raise_error(StopIteration))
+
+            expect(lambda: next(iterator3)).to(
+                raise_error(StopIteration))
+
+        with it('can be bounded as well'):
+            def bounded_repeater(value, max_repeats):
+                count = 0
+                while True:
+                    if count >= max_repeats:
+                        return
+                    count += 1
+                    yield value
+
+            result4 = map(lambda x: x.upper(), bounded_repeater('Hi', 4))
+            assert list(result4) == ['HI', 'HI', 'HI', 'HI']
+
+    with context('generator expressions'):
+        with it('is a single line expression'):
+            iterator_sl = ('Hello' for i in range(3))
+
+            assert next(iterator_sl) == 'Hello'
+            assert next(iterator_sl) == 'Hello'
+            assert next(iterator_sl) == 'Hello'
+
+            expect(lambda: next(iterator_sl)).to(
+                raise_error(StopIteration))
+
+        with it('expression can be concise'):
+            assert sum((x * 2 for x in range(10))) == 90
+            # The parens are not needed
+            assert sum(x * 2 for x in range(10)) == 90
+
+    with context('generator chains'):
+        with it('can be chained together'):
+            def integers():
+                for i in range(1, 9):
+                    yield i
+
+            def squared(seq):
+                for i in seq:
+                    yield i * i
+
+            chain = squared(integers())
+            assert list(chain) == [1, 4, 9, 16, 25, 36, 49, 64]
+
+            integers2 = range(8)
+            squared2 = (i * i for i in integers2)
+            negated = (-i for i in squared2)
+
+            assert list(negated) == [0, -1, -4, -9, -16, -25, -36, -49]
