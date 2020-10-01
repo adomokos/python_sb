@@ -1,5 +1,16 @@
 from mamba import description, it, context  # type: ignore
-# from expects import expect, raise_error  # type: ignore
+from expects import expect, raise_error  # type: ignore
+
+
+class Repeater:
+    def __init__(self, value):
+        self.value = value
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.value
 
 
 with description('Chapter06') as self:
@@ -37,3 +48,20 @@ with description('Chapter06') as self:
             lst2 = [1, 2, 3, 4, 5]
             del lst2[:]
             assert lst2 == []
+
+    with context('iterators'):
+        with it('needs __iter__ and __next__ dunders'):
+            repeater = Repeater('Hello')
+            iterator = iter(repeater)
+            assert next(iterator) == 'Hello'
+            assert next(iterator) == 'Hello'
+
+        with it('works from list'):
+            my_list = [1, 2, 3]
+            list_iterator = iter(my_list)
+            assert next(list_iterator) == 1
+            assert next(list_iterator) == 2
+            assert next(list_iterator) == 3
+
+            expect(lambda: next(list_iterator)).to(
+                raise_error(StopIteration))
