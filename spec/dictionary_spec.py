@@ -1,7 +1,8 @@
-from mamba import description, it
+from mamba import description, it  # type: ignore
+from typing import Dict
 
 
-released = {
+released: Dict[str, int] = {
     "iphone": 2007,
     "iphone 3G": 2008,
     "iphone 3GS": 2009,
@@ -28,7 +29,7 @@ with description('Dictionary'):
 
     with it('can be initialized with list of fields'):
         items = [['one', 1], ['two', 2], ['three', 3]]
-        d = dict(items)
+        d: Dict[str, int] = dict(items)
         assert len(d.keys()) == 3
 
     with it('can remove item from dictionary'):
