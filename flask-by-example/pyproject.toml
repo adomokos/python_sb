@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "flask-by-example"
+version = "0.1.0"
+description = ""
+authors = ["Attila Domokos <adomokos@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flask = "^1.1.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[tool.poetry.scripts]
+server = "flask_by_example.app:run"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
