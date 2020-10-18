@@ -1,17 +1,27 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
-import os
 from os import environ as env
-
-app = Flask(__name__)
-app.config.from_object(os.environ['APP_SETTINGS'])
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
+import os
+from .extensions import db
 from .models import Result
+
+
+def create_app():
+    app = Flask(__name__.split('.')[0])
+    app.config.from_object(os.environ['APP_SETTINGS'])
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    register_extensions(app)
+    migrate = Migrate(app, db)
+    return app
+
+
+def register_extensions(app):
+    db.init_app(app)
+
+
+app = create_app()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
