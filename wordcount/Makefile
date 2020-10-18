@@ -1,6 +1,8 @@
 -include .env.$(or $(APP_ENV),dev)
 export
 
+APP_ENV ?= dev
+
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 
 .DEFAULT_GOAL := help
