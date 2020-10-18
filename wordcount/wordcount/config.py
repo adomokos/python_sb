@@ -7,6 +7,9 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'this-needs-to-be-changed'
+    SQLALCHEMY_DATABASE_URI = \
+        f"postgresql://{os.environ['POSTGRES_USER']}:{os.environ['POSTGRES_PASSWORD']}@localhost:5432/{os.environ['POSTGRES_DB']}"
+
 
 
 class ProductionConfig(Config):
@@ -18,9 +21,9 @@ class StagingConfig(Config):
     DEBUG = True
 
 
-class Development(Config):
+class DevelopmentConfig(Config):
     DEVELOPMENT = True
-    DEBUG = True
+    DEBUG = False
 
 
 class TestingConfig(Config):

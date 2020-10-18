@@ -27,6 +27,13 @@ repl: ## Fire up the Repl
 	poetry run python
 .PHONY: repl
 
+flask: ## Flask run app for example `ACTION="db migrate"`
+	FLASK_APP=wordcount/app.py poetry run flask $(ACTION)
+.PHONY: flask
+
+manage: ## Manage the app
+	poetry run wordcount/manage.py db init
+
 #################
 # Docker targets
 #################
