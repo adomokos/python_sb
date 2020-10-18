@@ -25,6 +25,14 @@ repl: ## Fire up the Repl
 	poetry run python
 .PHONY: repl
 
+#################
+# Docker targets
+#################
+
+.PHONY: docker.db-prompt
+docker.db-prompt: ## Jumps into the Postgres DB psql prompt
+	docker-compose exec postgres-db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+
 help: ## Prints this help message
 	@grep -h -E '^[a-zA-Z0-9\._-]+:.*?## .*$$' $(MAKEFILE_LIST) |\
 		sort | \
