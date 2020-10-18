@@ -15,7 +15,7 @@ async-example: ## Run the async example
 .PHONY: async-example
 
 test: ## Run the tests
-	poetry run pytest -s
+	poetry run pytest -s tests
 .PHONY: test
 
 spec: ## Run the specs
