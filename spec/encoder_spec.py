@@ -1,32 +1,46 @@
 from mamba import description, it  # type: ignore
 import itertools as itl
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 # https://en.wikipedia.org/wiki/The_Alphabet_Cipher
 
-x = list( map(chr, range(ord('a'), ord('z')+1)))
-cycled = itl.cycle(x)
-# result = [list(itl.islice(cycled, len(x)+1)) for i in x]
-# result2 = [{i: list(itl.islice(cycled, len(x)+1))[:-1]} for i in x]
-# result3 = [{i: dict(zip(x, list(itl.islice(cycled, len(x)+1))[:-1]))} for i in x]
-map_table = dict([(i, dict(zip(x, list(itl.islice(cycled, len(x)+1))[:-1]))) for i in x])
+class Encryptor:
+    def __init__(self, password):
+        x = list( map(chr, range(ord('a'), ord('z')+1)))
+        cycled = itl.cycle(x)
 
-def encrypt_values(x: str, y: str, map_table: Dict[str, Dict[str, str]]) -> Optional[str]:
-    return map_table.get(x, {}).get(y, None)
+        # result = [list(itl.islice(cycled, len(x)+1)) for i in x]
+        # result2 = [{i: list(itl.islice(cycled, len(x)+1))[:-1]} for i in x]
+        # result3 = [{i: dict(zip(x, list(itl.islice(cycled, len(x)+1))[:-1]))} for i in x]
+        self.map_table = \
+            dict([(i, dict(zip(x, list(itl.islice(cycled, len(x)+1))[:-1]))) for i in x])
+        self.password = password
+
+
+    def encrypt(self, x: str, y: str) -> Optional[str]:
+        return self.map_table.get(x, {}).get(y, None)
+
+
+    def encrypt_word(self, word: str) -> List[Optional[str]]:
+        cycled = itl.cycle(self.password)
+        base_tuple = list(zip([char for char in word], list(itl.islice(cycled,
+            len(word)))))
+
+        return [self.encrypt(x, y) for (x, y) in base_tuple]
 
 
 with description('Encoder'):
+
     with it('can create a mapping table'):
-        assert len(map_table), 25
-        assert encrypt_values('m', 'v', map_table) == 'h'
-        assert encrypt_values('e', 'i', map_table) == 'm'
+        encryptor = Encryptor('hello')
+
+        assert encryptor.encrypt('m', 'v') == 'h'
+        assert encryptor.encrypt('e', 'i') == 'm'
 
     with it('can encrypt string with password'):
-        password = "vigilance"
+        encryptor = Encryptor('vigilance')
         message = "meetmeontuesdayeveningatseven"
-        cycled = itl.cycle(password)
-        base_tuple = list(zip([char for char in message], list(itl.islice(cycled, len(message)))))
 
-        result = [encrypt_values(x, y, map_table) for (x, y) in base_tuple]
+        result = encryptor.encrypt_word(message)
         encrypted_string = "hmkbxebpxpmyllyrxiiqtoltfgzzv"
         assert result == [char for char in encrypted_string]
