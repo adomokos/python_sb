@@ -9,6 +9,7 @@ class Cypher:
         x = list( map(chr, range(ord('a'), ord('z')+1)))
         cycled = itl.cycle(x)
 
+        # I captured how I ended up with that specific list comprehension
         # result = [list(itl.islice(cycled, len(x)+1)) for i in x]
         # result2 = [{i: list(itl.islice(cycled, len(x)+1))[:-1]} for i in x]
         # result3 = [{i: dict(zip(x, list(itl.islice(cycled, len(x)+1))[:-1]))} for i in x]
