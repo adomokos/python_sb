@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 
 # https://en.wikipedia.org/wiki/The_Alphabet_Cipher
 
-class Cypher:
+class Cipher:
     def __init__(self, password):
         x = list( map(chr, range(ord('a'), ord('z')+1)))
         cycled = itl.cycle(x)
@@ -30,16 +30,16 @@ class Cypher:
         return [self.encrypt(x, y) for (x, y) in base_tuple]
 
 
-with description('Cypher'):
+with description('Cipher'):
 
     with it('can create a mapping table'):
-        encryptor = Cypher('hello')
+        encryptor = Cipher('hello')
 
         assert encryptor.encrypt('m', 'v') == 'h'
         assert encryptor.encrypt('e', 'i') == 'm'
 
     with it('can encrypt string with password'):
-        encryptor = Cypher('vigilance')
+        encryptor = Cipher('vigilance')
         message = "meetmeontuesdayeveningatseven"
 
         result = encryptor.encrypt_word(message)
