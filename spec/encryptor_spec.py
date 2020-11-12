@@ -29,7 +29,7 @@ class Encryptor:
         return [self.encrypt(x, y) for (x, y) in base_tuple]
 
 
-with description('Encoder'):
+with description('Cypher'):
 
     with it('can create a mapping table'):
         encryptor = Encryptor('hello')
